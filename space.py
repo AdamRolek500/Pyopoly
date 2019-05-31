@@ -6,22 +6,28 @@ import json
 
 
 class Space:
-    def __init__(self, name, price, rent, color, index, house_cost, mortgage):
+    def __init__(self, name, index, type):
         self.name = name
-        self.price = price
-        self.rent = rent
-        self.color = color
         self.index = index
-        self.house_cost = house_cost
-        self.mortgage = mortgage
+        self.type = type
 
     def dump_details(self):
         return json.dumps({
             "name": self.name,
-            "price": self.price,
-            "rent": self.rent,
-            "color": self.color,
             "index": self.index,
-            "house_cost": self.house_cost,
-            "mortgage": self.mortgage
+            "type": self.type
         }, indent=4)
+
+    def action(self):
+        if self.type is "go":
+            print("This is go!")
+        elif self.type is "community-chest":
+            print("community-chest")
+        elif self.type is "chance":
+            print("chance")
+        elif self.type is "jail":
+            print("jail")
+        elif self.type is "free-parking":
+            print("free-parking")
+        elif self.type is "go-to-jail":
+            print("go-to-jail")
