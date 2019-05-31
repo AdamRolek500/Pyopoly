@@ -4,7 +4,7 @@ Monopoly clone with Pygame
 By: Adam Rolek
 """
 
-from property import Property
+from space import Space
 import json
 
 GAME_BOARD = [None for i in range(40)]
@@ -15,13 +15,18 @@ with open("spaces.json", "r") as fd:
     index = 0
     for space in data:
         if space["type"] == "property":
-            p = Property(space["name"], space["cost"], space["rent"], space["color"], index, space["house"], 5, space["group"], space["type"])
-            properties.append(p)
-            GAME_BOARD[index] = p
+            # Space(name, index, type, price, rent, color, house_cost, mortgage, group)
+            p = Space(space["name"], index, space["type"], space["cost"], space["rent"], space["color"], space["house"],
+                      5, space["group"])
+        else:
+            p = Space(space["name"], index, space["type"])
+        GAME_BOARD[index] = p
         index += 1
-    for space in properties:
-        print(space.dump_details())
-        space.hello_world()
+    for space in GAME_BOARD:
+        try:
+            space.action()
+        except Exception as error:
+            print(error)
 
 
 
