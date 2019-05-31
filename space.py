@@ -48,6 +48,6 @@ class Space:
         elif self.type == "railroad":
             print("railroad")
         elif self.type == "property":
-            print("property")
+            print(self.name + "\t" + self.color)
         else:
             print("Unknown")
