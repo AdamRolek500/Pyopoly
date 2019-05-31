@@ -6,7 +6,8 @@ import json
 
 
 class Space:
-    def __init__(self, name, index, type, price=None, rent=None, color=None, house_cost=None, mortgage=None, group=None):
+    def __init__(self, name, index, type, price=None, group=None, rent=None, color=None, house_cost=None, mortgage=None,
+                 owner=None):
         self.name = name
         self.index = index
         self.type = type
@@ -16,19 +17,35 @@ class Space:
         self.house_cost = house_cost
         self.mortgage = mortgage
         self.group = group
+        self.owner = owner
 
-    def dump_details(self):
-        return json.dumps({
+    def get_details(self):
+        details = {
             "name": self.name,
-            "price": self.price,
-            "rent": self.rent,
-            "color": self.color,
             "type": self.type,
-            "group": self.group,
-            "index": self.index,
-            "house_cost": self.house_cost,
-            "mortgage": self.mortgage
-        }, indent=4)
+            "index": self.index
+        }
+        if self.type == "go" or self.type == "community-chest" or self.type == "chance" or self.type == "jail" or \
+                self.type == "free-parking" or self.type == "go-to-jail":
+            return json.dumps(details, indent=4)
+        elif self.type == "tax":
+            details["cost"] = self.price
+            return json.dumps(details, indent=4)
+        elif self.type == "railroad":
+            details["cost"] = self.price
+            details["group"] = self.group
+            return json.dumps(details, indent=4)
+        elif self.type == "property":
+            details["cost"] = self.price
+            details["rent"] = self.rent
+            details["color"] = self.color
+            details["group"] = self.group
+            details["house_cost"] = self.house_cost
+            details["mortgage"] = self.mortgage
+            details["owner"] = self.owner
+            return json.dumps(details, indent=4)
+        else:
+            return json.dumps(details, indent=4)
 
     def action(self):
         if self.type == "go":
@@ -51,3 +68,6 @@ class Space:
             print(self.name + "\t" + self.color)
         else:
             print("Unknown")
+
+    def set_owner(self, player):
+        self.owner = player.get_id()

@@ -20,31 +20,38 @@ def roll_dice():
 
 
 def main():
+    play = Player("Adam", 1)
     with open("spaces.json", "r") as fd:
         data = json.load(fd)
         index = 0
         for space in data:
             if space["type"] == "property":
-                # Space(name, index, type, price, rent, color, house_cost, mortgage, group)
-                p = Space(space["name"], index, space["type"], space["cost"], space["rent"], space["color"],
-                          space["house"],
-                          5, space["group"])
+                # Space(self, name, index, type, price, group, rent, color, house_cost, mortgage, owner)
+                p = Space(space["name"], index, space["type"], space["cost"], space["group"], space["rent"],
+                          space["color"], space["house"], 5)
+                p.set_owner(play)
+            elif space["type"] == "tax":
+                p = Space(space["name"], index, space["type"], space["cost"])
+                p.set_owner(play)
+            elif space["type"] == "railroad":
+                p = Space(space["name"], index, space["type"], space["cost"], space["group"])
+                p.set_owner(play)
             else:
                 p = Space(space["name"], index, space["type"])
             GAME_BOARD[index] = p
             index += 1
         for space in GAME_BOARD:
             try:
-                space.action()
+                print(space.get_details())
             except Exception as error:
                 print(error)
 
-    play = Player("Adam")
-    
+    #while True:
     die1, die2 = roll_dice()
     print("die1: " + str(die1) + "\ndie2: " + str(die2))
     play.move((die1 + die2))
     print(play.get_details())
+    input("Press Enter to continue...")
 
     # for i in range(20, 31):
     #     if GAME_BOARD[i] is None:
