@@ -96,21 +96,28 @@ class Board:
     def run(self):
         self.root.mainloop()
 
+    def quit_confirm(self):
+        self.root.destroy()
+
+    def quit_cancel(self):
+        self.quit_window.destroy()
+
     def close(self, event):
         screen_height, screen_width = self.root.winfo_screenheight(), self.root.winfo_screenwidth()
-        width, height = 200, 300
+        width, height = 200, 200
         x = (screen_width/2) - (width/2)
         y = (screen_height/2) - (height/2)
-        newWindow = tkinter.Toplevel(self.root)
-        newWindow.title("quit menu")
-        newWindow.geometry("{}x{}+{}+{}".format(width, height, int(x), int(y)))
+        self.quit_window = tkinter.Toplevel(self.root)
+        self.quit_window.title("quit menu")
+        self.quit_window.geometry("{}x{}+{}+{}".format(width, height, int(x), int(y)))
 
-        Label(newWindow, text ="This is a new window").pack()
+        Button(self.quit_window, text ="Close", command=self.quit_confirm).pack()
+        Button(self.quit_window, text ="Cancle", command=self.quit_cancel).pack()
 
-        newWindow.transient(self.root)
-        newWindow.focus_set()
-        newWindow.grab_set()
-        self.root.wait_window(newWindow)
+        self.quit_window.transient(self.root)
+        self.quit_window.focus_set()
+        self.quit_window.grab_set()
+        self.root.wait_window(self.quit_window)
 
         
         
