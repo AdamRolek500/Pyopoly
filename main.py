@@ -49,11 +49,22 @@ class Board:
         self.board_canvas.pack()
         self.resize_image()
 
+        length = self.root.winfo_screenheight()
+        print(length)
+        print(int(length * .132))
+        img = PIL.Image.open("button.png").resize(
+            (int(length * .132), int(length * .132)), PIL.Image.ANTIALIAS
+        )
+        photo = ImageTk.PhotoImage(img)
+        space = self.board_canvas.create_image(0,0,image=photo, anchor=NW)
+        self.board_canvas.tag_bind(space, "<Button-1>", self.get_space_info)
+        # b = Button(self.board_canvas, text="hey")
+        # self.board_canvas.create_window(0, 0, anchor=NW, window=b)
+        # b.pack()
+
+        
         self.information_frame = Frame(self.root_frame, bg="yellow")
         self.board_frame.pack(side=RIGHT)
-
-        # b = Button(self.board, text="hey")
-        # b.pack()
 
         self.GAME_BOARD = []
 
@@ -83,6 +94,9 @@ class Board:
 
         # Running the mainloop
         self.run()
+
+    def get_space_info(self, event):
+        print("HERE")
 
     def resize_image(self):
         height = self.root.winfo_screenheight()
