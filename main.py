@@ -34,24 +34,30 @@ def roll_dice():
 class Board:
     def __init__(self):
         print("Initializing Board Object...")
+        # Creating the root window
         self.root = tkinter.Tk() 
+        # Making the root window fullscreen
         self.root.attributes("-fullscreen", True)
+        # Binding the ESCAPE key to the close function
         self.root.bind('<Escape>', self.close)
+        # Creating the root frame for the game and packing to the left
         self.root_frame = Frame(self.root, bg="red")
         self.root_frame.pack(side=LEFT)
 
+        # Creating the board frame (board_frame is in the root frame)
         self.board_frame = Frame(self.root_frame, bg="green")
         self.board_frame.pack(side=LEFT)
+        # broad_img is the picture of the monopoly board
         self.board_image = ImageTk.PhotoImage(file = "monopoly_board.jpg")
+        # board_canvas contains the pictures and controls
         self.board_canvas = Canvas(self.board_frame, bg="blue", height=self.board_image.height(), width=self.board_image.width())
+        # Setting the top left corner of the board to (0, 0)
         self.canvas_board_image = self.board_canvas.create_image(0, 0, image=self.board_image, anchor = NW)
-        # self.board_canvas.bind("<Configure>", self.resize_image)
+        # Packing the canvas and sizing the board img
         self.board_canvas.pack()
         self.resize_image()
 
         length = self.root.winfo_screenheight()
-        print(length)
-        print(int(length * .132))
         img = PIL.Image.open("button.png").resize(
             (int(length * .132), int(length * .132)), PIL.Image.ANTIALIAS
         )
