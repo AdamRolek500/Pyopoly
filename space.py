@@ -6,11 +6,10 @@ import json
 
 
 class Space:
-    def __init__(self, name, index, type, price=None, group=None, rent=None, color=None, house_cost=None, mortgage=None,
-                 owner=None):
+    def __init__(self, name, index, space_type, price=None, group=None, rent=None, color=None, house_cost=None, mortgage=None, owner=None, space_id=None):
         self.name = name
         self.index = index
-        self.type = type
+        self.type = space_type
         self.price = price
         self.rent = rent
         self.color = color
@@ -18,34 +17,25 @@ class Space:
         self.mortgage = mortgage
         self.group = group
         self.owner = owner
+        self.space_id = space_id
+
+    def get_id(self):
+        return self.space_id
 
     def get_details(self):
-        details = {
+        return {
             "name": self.name,
+            "index": self.index,
             "type": self.type,
-            "index": self.index
+            "price": self.price,
+            "rent": self.rent,
+            "color": self.color,
+            "house_cost": self.house_cost,
+            "mortgage": self.mortgage,
+            "group": self.group,
+            "owner": self.owner,
+            "space_id": self.space_id
         }
-        if self.type == "go" or self.type == "community-chest" or self.type == "chance" or self.type == "jail" or \
-                self.type == "free-parking" or self.type == "go-to-jail":
-            return json.dumps(details, indent=4)
-        elif self.type == "tax":
-            details["cost"] = self.price
-            return json.dumps(details, indent=4)
-        elif self.type == "railroad":
-            details["cost"] = self.price
-            details["group"] = self.group
-            return json.dumps(details, indent=4)
-        elif self.type == "property":
-            details["cost"] = self.price
-            details["rent"] = self.rent
-            details["color"] = self.color
-            details["group"] = self.group
-            details["house_cost"] = self.house_cost
-            details["mortgage"] = self.mortgage
-            details["owner"] = self.owner
-            return json.dumps(details, indent=4)
-        else:
-            return json.dumps(details, indent=4)
 
     def action(self):
         if self.type == "go":
